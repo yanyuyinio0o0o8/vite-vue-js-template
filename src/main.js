@@ -1,5 +1,19 @@
 import { createApp } from 'vue'
 import './style.css'
-import App from './App.vue'
+import './mock' // 引入mock数据
+import App from './App'
+import Router from './router'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+// import locale from 'element-plus/lib/locale/lang/zh-cn'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+app.use(Router)
+app.use(ElementPlus)
+// 使用element-plus 并且设置全局的大小
+// app.use(ElementPlus, {
+//     locale: locale,
+//     // 支持 large、default、small
+//     size: Cookies.get('size') || 'default'
+// })
+app.mount('#app')

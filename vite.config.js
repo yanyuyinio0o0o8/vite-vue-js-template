@@ -2,10 +2,14 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  configureWebpack: {
+    devtool: 'source-map'
+  },
+  plugins: [vue(), vueJsx()],
   resolve: {
     // https://cn.vitejs.dev/config/#resolve-alias
     alias: {
@@ -21,5 +25,6 @@ export default defineConfig({
     port: 8080,
     host: true,
     open: false,
+    proxy: {}
   },
 })

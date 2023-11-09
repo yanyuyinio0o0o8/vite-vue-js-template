@@ -39,7 +39,7 @@
     </ul>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="login">
 //此处要声明lang=“ts”不然引入FormInstance, FormRules会报错
 import { defineComponent, ref, reactive } from "vue";
 import { useRouter } from "vue-router";
@@ -55,8 +55,8 @@ const bgHight = window.innerHeight + "px";
 const formSize = ref("default");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
-  name: "",
-  password: "",
+  name: "play",
+  password: "abcd@1234",
 });
 //验证规则
 const rules = reactive<FormRules>({
@@ -71,7 +71,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       console.log(ruleForm);
       loginApi(ruleForm).then((res) => {
         console.log(res);
-        router.push("/test");
+        router.push("/show");
       });
     } else {
       console.log("error submit!", fields);

@@ -1,10 +1,11 @@
 import { createApp } from 'vue'
-import './style.css'
-import './mock' // 引入mock数据
+import '@/assets/styles/index.scss' 
+// import './mock' // 引入mock数据
 import App from './App'
 import Router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import '@/assets/styles/cesium-widgets.css'
 // import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 const app = createApp(App)

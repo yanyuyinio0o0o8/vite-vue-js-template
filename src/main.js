@@ -5,7 +5,6 @@ import App from './App'
 import Router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import '@/assets/styles/cesium-widgets.css'
 // import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 const app = createApp(App)

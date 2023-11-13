@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createWebHistory, createRouter, createWebHashHistory } from 'vue-router'
+import Layout from '@/components/layout'
 
 const routes = [
     {
@@ -7,9 +8,28 @@ const routes = [
         component: () => import('@/views/login.vue')
     },
     {
+        path: '/',
+        name: 'home',
+        component: Layout,
+        children: [
+            {
+                hidden: false,
+                path: '/home',
+                component: () => import('@/views/home.vue'),
+                name: 'homeIndex',
+                meta: {
+                    title: '业务流程发布管理',
+                    icon: '',
+                    noCache: true
+                }
+            }
+        ]
+    },
+    {
         path: '/show',
         name: 'show',
-        component: () => import('@/views/show.vue')
+        component: () => import('@/views/show.vue'),
+        meta: { title: '测试展示' }
     },
     // {
     //     path: '/about',

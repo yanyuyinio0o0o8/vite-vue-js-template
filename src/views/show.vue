@@ -39,8 +39,14 @@
   </div>
 </template>
 
-<script setup name="show">
-import GisViewer from "@/components/GisViewer/index";
+<script setup>
+import GisViewer from "@/components/gisViewer/index";
+
+const router = useRouter();
+console.log(router);
+
+let simDemonSource = new Cesium.CustomDataSource("simDemon");
+const gisViewerRef = ref(null);
 
 const res = {
   code: 200,
@@ -1459,6 +1465,56 @@ const res = {
   success: true,
 };
 const names = ["卫星状态", "卫星管理", "三维卫星仿真"];
+
+onMounted(() => {
+  loadRocketSimulate();
+});
+
+function loadRocketSimulate() {
+  const scene = viewer.scene;
+  const height = 220000.0;
+  const origin = Cesium.Cartesian3.fromDegrees(-74.693, 28.243, height);
+  const modelMatrix = Cesium.Transforms.headingPitchRollToFixedFrame(
+    origin,
+    new Cesium.HeadingPitchRoll()
+  );
+  const rocketPrimitive = scene.primitives.add(
+    Cesium.Model.fromGltf({
+      url: "model/launchvehicle.glb",
+      modelMatrix: modelMatrix,
+      minimumPixelSize: 128,
+    })
+  );
+
+  console.log("rocketPrimitive", rocketPrimitive);
+  rocketPrimitive.readyPromise.then(function (model) {
+    const camera = viewer.camera;
+
+    // Zoom to model
+    const controller = scene.screenSpaceCameraController;
+    const r = 2.0 * Math.max(model.boundingSphere.radius, camera.frustum.near);
+    controller.minimumZoomDistance = r * 0.2;
+
+    const center = Cesium.Matrix4.multiplyByPoint(
+      model.modelMatrix,
+      Cesium.Cartesian3.ZERO,
+      new Cesium.Cartesian3()
+    );
+    const heading = Cesium.Math.toRadians(0.0);
+    const pitch = Cesium.Math.toRadians(-10.0);
+    camera.lookAt(
+      center,
+      new Cesium.HeadingPitchRange(heading, pitch, r * 0.8)
+    );
+
+    model.setArticulationStage(
+      //对应属性改变参数值
+      "SRBFlames Size",
+      1
+    );
+    model.applyArticulations(); //使得修改的属性生效
+  });
+}
 
 function test(res) {
   let routers = res.respBody.routes;

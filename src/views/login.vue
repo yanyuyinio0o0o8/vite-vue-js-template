@@ -39,12 +39,7 @@
     </ul>
   </div>
 </template>
-<script setup lang="ts" name="login">
-//此处要声明lang=“ts”不然引入FormInstance, FormRules会报错
-import { defineComponent, ref, reactive } from "vue";
-import { useRouter } from "vue-router";
-//表单验证
-import type { FormInstance, FormRules } from "element-plus";
+<script setup name="login">
 //接口
 import { loginApi } from "@/api/login";
 
@@ -53,18 +48,18 @@ const router = useRouter();
 const bgHight = window.innerHeight + "px";
 //用于控制该表单内组件的尺寸
 const formSize = ref("default");
-const ruleFormRef = ref<FormInstance>();
+const ruleFormRef = ref();
 const ruleForm = reactive({
   name: "play",
   password: "abcd@1234",
 });
 //验证规则
-const rules = reactive<FormRules>({
+const rules = reactive({
   name: [{ required: true, message: "请输入账号", trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 });
 //表单验证+调用虚拟接口
-const submitForm = async (formEl: FormInstance | undefined) => {
+const submitForm = async function (formEl) {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -80,7 +75,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 };
 //重置
 
-const resetForm = (formEl: FormInstance | undefined) => {
+const resetForm = (formEl) => {
   if (!formEl) return;
   formEl.resetFields();
 };

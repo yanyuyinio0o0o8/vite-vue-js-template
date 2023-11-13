@@ -7,9 +7,8 @@
     </div>
   </div>
 </template>
-<script setup name="GisViewer">
+<script setup>
 import world from "@/assets/images/world.jpg";
-import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
 
 let helper = ref(null);
 const movep = reactive({
@@ -44,13 +43,12 @@ onMounted(() => {
       -0.2833588392420772
     ),
   });
-  // viewer.extend(Cesium.viewerCesiumInspectorMixin);
   viewOptimize();
   viewer.scene.skyAtmosphere.show = true;
   // viewer.scene.screenSpaceCameraController.enableCollisionDetection = false;
   addTDTLayer();
   // 定位到中国版图
-  setView(108, 34, 20000000);
+  // setView(108, 34, 20000000);
   timeFormat();
 
   helper = new Cesium.EventHelper();
@@ -64,14 +62,14 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  //   if (viewer) {
-  //     let gl = viewer.scene.context._originalGLContext;
-  //     viewer.destroy();
-  //     viewer = null;
-  //     gl.getExtension("WEBGL_lose_context").loseContext();
-  //     gl = null;
-  //   }
-  //   console.log("3d地图销毁");
+    if (viewer) {
+      let gl = viewer.scene.context._originalGLContext;
+      viewer.destroy();
+      viewer = null;
+      gl.getExtension("WEBGL_lose_context").loseContext();
+      gl = null;
+    }
+    console.log("3d地图销毁");
 });
 
 /**
@@ -80,11 +78,11 @@ onBeforeUnmount(() => {
 function viewOptimize() {
   // 设置相机最小值，放大后不会出现模型与波束分离
   // 300000
-  viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1500; // 相机的高度的最小值
-  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 300000000; // 相机高度的最大值
-  viewer.scene.screenSpaceCameraController._minimumZoomRate = 30000; // 设置相机缩小时的速率
-  viewer.scene.screenSpaceCameraController._maximumZoomRate = 590637627200; // 设置相机放大时的速率
-  viewer.scene.screenSpaceCameraController.enableTilt = false;
+  // viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1500; // 相机的高度的最小值
+  // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 300000000; // 相机高度的最大值
+  // viewer.scene.screenSpaceCameraController._minimumZoomRate = 30000; // 设置相机缩小时的速率
+  // viewer.scene.screenSpaceCameraController._maximumZoomRate = 590637627200; // 设置相机放大时的速率
+  // viewer.scene.screenSpaceCameraController.enableTilt = false;
   // 更改天空盒模型
   let groundSkybox = new Cesium.SkyBox({
     sources: {
@@ -148,7 +146,7 @@ function init3d() {
     geocoder: false, //是否显示搜索按钮
     homeButton: false, //是否显示主页按钮
     infoBox: false, //是否显示提示信息
-    sceneModePicker: false, //是否显示右上角的模式切换按钮
+    sceneModePicker: true, //是否显示右上角的模式切换按钮
     selectionIndicator: true, //是否显示选取指示器组件
     timeline: true, //是否显示下边的时间轴
     navigationHelpButton: false, //是否显示右上角的帮助按钮
@@ -162,13 +160,11 @@ function init3d() {
       rectangle: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
     }),
     // skyAtmosphere: true,
-    navigationHelpButtonViewModel: true,
-    orderIndependentTranslucency: false,
     contextOptions: {
       // threejs WebGLRenderer参数配置，基于webgl
       // https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene
       webgl: {
-        alpha: true, // 画布是否包含alpha（透明度）缓冲区。默认值为false。
+        // alpha: true, // 画布是否包含alpha（透明度）缓冲区。默认值为false。
         // depth: true, // 绘图缓冲区是否具有至少16位的 深度缓冲区。默认为true。
         // stencil: true, // 绘图缓存是否有一个至少8位的模板缓存， 默认值true
         antialias: true, // 是否执行抗锯齿。默认值为false。

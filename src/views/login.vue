@@ -65,7 +65,7 @@ const submitForm = async function (formEl) {
     if (valid) {
       console.log(ruleForm);
       loginApi(ruleForm).then((res) => {
-        console.log(res);
+        console.log("res:::", res);
         router.push("/show");
       });
     } else {

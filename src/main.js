@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import '@/assets/styles/index.scss' 
-// import './mock' // 引入mock数据
+import './mock' // 引入mock数据
 import App from './App'
 import Router from './router'
 import ElementPlus from 'element-plus'

@@ -23,6 +23,7 @@ const emit = defineEmits(["loadcomplete"]);
 
 // require("")
 onMounted(() => {
+  console.log('child');
   window.viewer = init3d();
   // viewer.extend(viewerCesiumInspectorMixin);
   viewer._cesiumWidget._creditContainer.style.display = "none";
@@ -50,6 +51,8 @@ onMounted(() => {
   // 定位到中国版图
   // setView(108, 34, 20000000);
   timeFormat();
+
+  loadRocketSimulate();
 
   helper = new Cesium.EventHelper();
   helper.add(viewer.scene.globe.tileLoadProgressEvent, function (e) {
@@ -298,6 +301,52 @@ function addTDTLayer() {
   viewer.imageryLayers.addImageryProvider(iboMap); // 加载边界
   viewer.imageryLayers.addImageryProvider(TDTImgProvider); // 加载影像
   viewer.imageryLayers.addImageryProvider(TDTZJProvider); // 加载中文标注
+}
+
+function loadRocketSimulate() {
+  const scene = viewer.scene;
+  const height = 220000.0;
+  const origin = Cesium.Cartesian3.fromDegrees(-74.693, 28.243, height);
+  const modelMatrix = Cesium.Transforms.headingPitchRollToFixedFrame(
+    origin,
+    new Cesium.HeadingPitchRoll()
+  );
+  const rocketPrimitive = scene.primitives.add(
+    Cesium.Model.fromGltf({
+      url: "model/launchvehicle.glb",
+      modelMatrix: modelMatrix,
+      minimumPixelSize: 128,
+    })
+  );
+
+  console.log("rocketPrimitive", rocketPrimitive);
+  rocketPrimitive.readyPromise.then(function (model) {
+    const camera = viewer.camera;
+
+    // Zoom to model
+    const controller = scene.screenSpaceCameraController;
+    const r = 2.0 * Math.max(model.boundingSphere.radius, camera.frustum.near);
+    controller.minimumZoomDistance = r * 0.2;
+
+    const center = Cesium.Matrix4.multiplyByPoint(
+      model.modelMatrix,
+      Cesium.Cartesian3.ZERO,
+      new Cesium.Cartesian3()
+    );
+    const heading = Cesium.Math.toRadians(0.0);
+    const pitch = Cesium.Math.toRadians(-10.0);
+    camera.lookAt(
+      center,
+      new Cesium.HeadingPitchRange(heading, pitch, r * 0.8)
+    );
+
+    model.setArticulationStage(
+      //对应属性改变参数值
+      "SRBFlames Size",
+      1
+    );
+    model.applyArticulations(); //使得修改的属性生效
+  });
 }
 </script>
 

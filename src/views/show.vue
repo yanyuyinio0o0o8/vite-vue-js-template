@@ -34,18 +34,20 @@
     <el-button type="warning" :icon="Star" circle />
     <el-button type="danger" :icon="Delete" circle />
   </el-row> -->
-  <div class="gis-viewer-content">
-    <GisViewer ref="gisViewerRef" />
+  <div ref="viewerRef" class="gis-viewer-content">
+    <GisViewer v-if="isMounted" ref="gisViewerRef" />
   </div>
 </template>
 
 <script setup>
 import GisViewer from "@/components/gisViewer/index";
+import { computed } from "vue";
 
 const router = useRouter();
 console.log(router);
 
 let simDemonSource = new Cesium.CustomDataSource("simDemon");
+const viewerRef = ref(null);
 const gisViewerRef = ref(null);
 
 const res = {
@@ -1466,55 +1468,12 @@ const res = {
 };
 const names = ["卫星状态", "卫星管理", "三维卫星仿真"];
 
+const isMounted = computed(() => viewerRef.value);
+
 onMounted(() => {
-  loadRocketSimulate();
+  // test(res);
 });
 
-function loadRocketSimulate() {
-  const scene = viewer.scene;
-  const height = 220000.0;
-  const origin = Cesium.Cartesian3.fromDegrees(-74.693, 28.243, height);
-  const modelMatrix = Cesium.Transforms.headingPitchRollToFixedFrame(
-    origin,
-    new Cesium.HeadingPitchRoll()
-  );
-  const rocketPrimitive = scene.primitives.add(
-    Cesium.Model.fromGltf({
-      url: "model/launchvehicle.glb",
-      modelMatrix: modelMatrix,
-      minimumPixelSize: 128,
-    })
-  );
-
-  console.log("rocketPrimitive", rocketPrimitive);
-  rocketPrimitive.readyPromise.then(function (model) {
-    const camera = viewer.camera;
-
-    // Zoom to model
-    const controller = scene.screenSpaceCameraController;
-    const r = 2.0 * Math.max(model.boundingSphere.radius, camera.frustum.near);
-    controller.minimumZoomDistance = r * 0.2;
-
-    const center = Cesium.Matrix4.multiplyByPoint(
-      model.modelMatrix,
-      Cesium.Cartesian3.ZERO,
-      new Cesium.Cartesian3()
-    );
-    const heading = Cesium.Math.toRadians(0.0);
-    const pitch = Cesium.Math.toRadians(-10.0);
-    camera.lookAt(
-      center,
-      new Cesium.HeadingPitchRange(heading, pitch, r * 0.8)
-    );
-
-    model.setArticulationStage(
-      //对应属性改变参数值
-      "SRBFlames Size",
-      1
-    );
-    model.applyArticulations(); //使得修改的属性生效
-  });
-}
 
 function test(res) {
   let routers = res.respBody.routes;
@@ -1547,9 +1506,8 @@ function test(res) {
     });
     return route;
   });
-  console.log(routers);
+  // console.log(routers);
 }
-test(res);
 </script>
 
 <style scoped>

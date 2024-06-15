@@ -1,4 +1,4 @@
-import Mock from 'mockjs'
+import Mock from 'mockjs';
 import loginApi from '@/api/user';
 // 重写mockjs send方法
 Mock.XHR.prototype.send = (() => {
@@ -20,13 +20,13 @@ Mock.XHR.prototype.send = (() => {
       }
       return _send.apply(this, arguments)
     }
-  })()
+  })();
   
   
 // 设置拦截Ajax请求的响应时间，模拟网络延迟,才能检测到数据变化
 Mock.setup({
     timeout: '200-600'
-})
+});
 // Mock数据示例
 // Mock.mock('/api/getList', {
 //     'list|10-20': [{
@@ -39,7 +39,6 @@ Mock.setup({
 //     }]
 // })
 // export default Mock;
-
 Mock.mock(/\/user\/login/,'get', loginApi.login)
  
 export default Mock;

@@ -41,7 +41,6 @@
 
 <script setup>
 import GisViewer from "@/components/gisViewer/index";
-import { computed } from "vue";
 
 const router = useRouter();
 console.log(router);

@@ -1,11 +1,11 @@
 import { createApp } from 'vue';
-import '@/assets/styles/index.scss';
 import './mock' // 引入mock数据
 import App from './App.vue';
 // import Router from './router';
 import router from './router';
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
+import '@/styles/index.scss';
 // import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 const app = createApp(App);

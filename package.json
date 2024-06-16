@@ -19,6 +19,9 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "mockjs": "^1.1.0",
+    "postcss": "^8.4.38",
+    "postcss-preset-env": "^9.5.14",
+    "postcss-pxtorem": "^6.1.0",
     "sass": "^1.69.5",
     "unplugin-auto-import": "^0.16.7",
     "vite": "^4.4.5"

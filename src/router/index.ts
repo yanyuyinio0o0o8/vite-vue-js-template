@@ -6,39 +6,32 @@ import Layout from '@/components/layout/index.vue';
 
 // const routes:Array<RouteRecordRaw> = [
 const routes: RouteRecordRaw[] = [
-    
-    // {
-    //     path: '/',
-    //     name: 'home',
-    //     component: Layout,
-    //     children: [
-    //         {
-    //             // hidden: false,
-    //             path: '/home',
-    //             component: () => import('@/views/home.vue'),
-    //             name: 'homeIndex',
-    //             meta: {
-    //                 title: '业务流程发布管理',
-    //                 icon: '',
-    //                 noCache: true
-    //             }
-    //         }
-    //     ]
-    // },
     {
         path: '/',
         redirect: '/login',
     },
     {
+        path: '/home',
+        name: 'home',
+        component: () => import('@/views/home.vue'),
+        children: [
+            {
+                // hidden: false,
+                path: '/show',
+                name: 'show',
+                component: () => import('@/views/show.vue'),
+                meta: {
+                    title: '测试展示',
+                    icon: '',
+                        noCache: true
+                    }
+            }
+        ]
+    },
+    {
         path: '/login',
         name: 'login',
         component: () => import('@/views/login.vue')
-    },
-    {
-        path: '/show',
-        name: 'show',
-        component: () => import('@/views/show.vue'),
-        meta: { title: '测试展示' }
     },
     // {
     //     path: '/about',

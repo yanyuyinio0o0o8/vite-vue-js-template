@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import path from 'path';
+// import path from 'path';
 import createVitePlugins from './vite/plugins';
 
 import { fileURLToPath, URL } from 'url';

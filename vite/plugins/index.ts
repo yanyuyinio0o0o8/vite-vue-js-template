@@ -1,7 +1,7 @@
-import createAutoImport from './auto-import'; // 引用插件
+import path from 'path';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import path from 'path';
+import createAutoImport from './auto-import'; // 引用插件
 
 // export default function createVitePlugins(viteEnv, isBuild = false) {
 //   console.log('89890780', path.resolve(__dirname, './'));
